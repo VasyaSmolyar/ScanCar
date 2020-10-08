@@ -1,22 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import CameraScreen from './components/CameraScreen';
 
-export default function App() {
-  return (
-    <View style={{ flex:1 }}>
-      <CameraScreen />
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const Stack = createStackNavigator();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+	return (
+		<View style={{flex: 1}}>
+			<StatusBar style="auto" />
+			<NavigationContainer>
+				<Stack.Navigator screenOptions={{headerShown: false, animationEnabled: false}}>
+					<Stack.Screen name="Camera" component={CameraScreen} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		</View>
+	);
+}
