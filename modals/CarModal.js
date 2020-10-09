@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import close from '../assets/close.png';
 
-export default function CarModal({item}) {
+export default function CarModal({item, onClose}) {
     if(item === null) {
         return (
             <View></View>
@@ -14,7 +15,9 @@ export default function CarModal({item}) {
                 <View style={{flex: 1}}></View>
                 <View style={styles.container}>
                     <View style={styles.carContainer}>
-
+                        <Image source={{uri: item.poster}} style={styles.carImage} resizeMode='contain' />
+                        <Text style={styles.carTitle}>{item.title}</Text>
+                        <Text style={styles.carYear}>2007</Text>
                     </View>
                     <View style={styles.creditContainer}>
                         <TouchableOpacity style={styles.buyButton}>
@@ -26,7 +29,9 @@ export default function CarModal({item}) {
                     </View>
                 </View>
                 <View style={styles.bottomContainer}>
-
+                    <TouchableOpacity onPress={onClose}>
+                        <Image source={close} style={styles.closeImage} resizeMode='contain' />
+                    </TouchableOpacity>
                 </View>
             </View>
         </Modal>
@@ -41,15 +46,18 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     container: {
-        flex: 5,
+        flex: 7,
         backgroundColor: '#fff',
         borderRadius: 20
     },  
     bottomContainer: {
-        flex: 1
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     carContainer: {
-        flex: 2
+        flex: 2,
+        alignItems: 'center'
     },
     creditContainer: {
         flex: 1,
@@ -82,5 +90,26 @@ const styles = StyleSheet.create({
         fontSize: 15,
         letterSpacing: 1.5,
         color: '#3a83f1'
+    },
+    carImage: {
+        height: 200,
+        width: '100%',
+        marginBottom: 10
+    },
+    carTitle: {
+        fontFamily: 'SFPro',
+        fontWeight: 'bold',
+        letterSpacing: 1.5,
+        fontSize: 16,
+        marginBottom: 15
+    },
+    carYear: {
+        fontFamily: 'SFPro',
+        fontSize: 14,
+        color: '#a0a4ae'
+    },
+    closeImage : {
+        width: 50,
+        height: 50
     }
 });

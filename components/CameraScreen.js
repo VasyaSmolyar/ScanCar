@@ -23,7 +23,7 @@ export default function CartScreen() {
 			<Text>Камера не работает!</Text>
 		)
 	}
-	
+
 	const setPhoto = async () => {
 		const photo = await cameraRef.takePictureAsync();
 		const localUri = photo.uri;
@@ -43,19 +43,23 @@ export default function CartScreen() {
 		console.log(text);
 		setItem(text);
 	}
+
+	const container = item === null ? (
+		<TouchableOpacity style={styles.buttonContainer} onPress={setPhoto}>
+			<Image source={button} resizeMode='contain' style={styles.photoButton} />
+		</TouchableOpacity>
+	) : null;
 	
     return (
         <View style={{flex: 1}}>
-			<CarModal item={item} />
+			<CarModal item={item} onClose={() => setItem(null)} />
             <Camera style={{flex: 1}} type={Camera.Constants.Type.back} ref={ref => {setCameraRef(ref);}}>
 			<View style={{
 				flex: 1,
 				backgroundColor: 'transparent',
 				flexDirection: 'row'
 			}}></View>
-			<TouchableOpacity style={styles.buttonContainer} onPress={setPhoto}>
-				<Image source={button} resizeMode='contain' style={styles.photoButton} />
-			</TouchableOpacity>
+			{container}
 		  </Camera>
         </View>
     );
