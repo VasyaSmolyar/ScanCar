@@ -3,8 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import CarModal from '../modals/CarModal';
 import button from '../assets/photo.png';
-
-const host = "http://194.67.92.163/";
+import { host } from '../constants';
 
 export default function CartScreen() {
 	const [perm, setPerm] = useState(null);

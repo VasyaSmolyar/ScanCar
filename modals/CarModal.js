@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, Modal, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import close from '../assets/close.png';
+import { useNavigation } from '@react-navigation/native';
 
 export default function CarModal({item, onClose}) {
+    const navigation = useNavigation();
     if(item === null) {
         return (
             <View></View>
@@ -20,7 +22,10 @@ export default function CarModal({item, onClose}) {
                         <Text style={styles.carYear}>2007</Text>
                     </View>
                     <View style={styles.creditContainer}>
-                        <TouchableOpacity style={styles.buyButton}>
+                        <TouchableOpacity style={styles.buyButton} onPress={() => {
+                            onClose();
+                            navigation.navigate('Offers', {car: item});
+                        }}>
                             <Text style={styles.buyText}>Купить новую</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.creditButton}>

@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import CameraScreen from './components/CameraScreen';
+import OfferScreen from './components/OfferScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ export default function App() {
 			<NavigationContainer>
 				<Stack.Navigator screenOptions={{headerShown: false, animationEnabled: false}}>
 					<Stack.Screen name="Camera" component={CameraScreen} />
+					<Stack.Screen name="Offers" component={OfferScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</View>
