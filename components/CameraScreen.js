@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
-import * as FileSystem from 'expo-file-system';
+import CarModal from '../modals/CarModal';
+import button from '../assets/photo.png';
 
 const host = "http://194.67.92.163/";
 
 export default function CartScreen() {
 	const [perm, setPerm] = useState(null);
 	const [cameraRef, setCameraRef] = useState(null);
+	const [item, setItem] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -37,22 +39,36 @@ export default function CartScreen() {
 				'content-type': 'multipart/form-data',
 			},
 		});
-		const text = await response.text();
+		const text = await response.json();
 		console.log(text);
+		setItem(text);
 	}
 	
     return (
         <View style={{flex: 1}}>
+			<CarModal item={item} />
             <Camera style={{flex: 1}} type={Camera.Constants.Type.back} ref={ref => {setCameraRef(ref);}}>
 			<View style={{
 				flex: 1,
 				backgroundColor: 'transparent',
 				flexDirection: 'row'
 			}}></View>
-			<TouchableOpacity style={{flex: 0.1, backgroundColor: '#fff'}} onPress={setPhoto}>
-				<Text>Отправить фото</Text>
+			<TouchableOpacity style={styles.buttonContainer} onPress={setPhoto}>
+				<Image source={button} resizeMode='contain' style={styles.photoButton} />
 			</TouchableOpacity>
 		  </Camera>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+	buttonContainer: {
+		alignItems: 'center', 
+		backgroundColor: 'rgba(0, 0, 0, 0.3)',
+		paddingVertical: 25
+	},
+	photoButton: {
+		width: 75,
+		height: 75
+	}
+});
