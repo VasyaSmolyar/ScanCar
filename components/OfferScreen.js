@@ -13,20 +13,20 @@ export default function OfferScreen ({ route, navigation }) {
             headers: {
                 'Content-type': 'application/json'
             },
+            /*
             body: JSON.stringify({
                 brand: car.brand,
                 model: car.model,
                 num: 20,
                 offset: 0
             })
-            /*
+            */
             body: JSON.stringify({
                 brand: "KIA",
                 model: "K5",
                 num: 20,
                 offset: 0
             })
-            */
         });
         const json = await response.json();
         console.log(json);
