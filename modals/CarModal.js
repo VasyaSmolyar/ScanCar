@@ -19,7 +19,7 @@ export default function CarModal({item, onClose}) {
                     <View style={styles.carContainer}>
                         <Image source={{uri: item.poster}} style={styles.carImage} resizeMode='contain' />
                         <Text style={styles.carTitle}>{item.title}</Text>
-                        <Text style={styles.carYear}>2007</Text>
+                        <Text style={styles.carYear}>{item.year}</Text>
                     </View>
                     <View style={styles.creditContainer}>
                         <TouchableOpacity style={styles.buyButton} onPress={() => {

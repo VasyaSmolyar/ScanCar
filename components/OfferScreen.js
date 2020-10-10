@@ -1,16 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { host } from '../constants';
+import close from '../assets/return.png';
 
-export default function OfferScreen ({route}) {
+export default function OfferScreen ({ route, navigation }) {
     const [list, setList] = useState([]);
     const { car } = route.params;
 
     useEffect(async () => {
-        const response = await fetch(host + 'api/auto/get?brand=' + car.brand + '&model=' + car.model + '&num=' + 20 + '&offset=' + 0);
+        const response = await fetch(host + 'api/auto/get', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            /*
+            body: JSON.stringify({
+                brand: car.brand,
+                model: car.model,
+                num: 20,
+                offset: 0
+            })
+            */
+            body: JSON.stringify({
+                brand: "KIA",
+                model: "K5",
+                num: 20,
+                offset: 0
+            })
+        });
         const json = await response.json();
         console.log(json);
-        setList(json.cars);
+        if(json.error === undefined) {
+            setList(json.cars);
+        } else {
+            setList([]);
+        }
     }, []);
 
     const data = list.map((item) => {
@@ -19,14 +43,14 @@ export default function OfferScreen ({route}) {
                 <View style={styles.infoContainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.carTitle}>{item.model} {item.brand}</Text>
-                        <Text style={styles.carYear}>{item.price}</Text>
+                        <Text style={styles.carYear}>{item.production_date}</Text>
                     </View>
-                    <Text style={styles.carPrice}>{item.production_date}</Text>
+                    <Text style={styles.carPrice}>{item.price}</Text>
                     <View style={styles.marketLabel}>
                         <Text style={styles.marketText}>{item.type}</Text>
                     </View>
                 </View>
-                <Image />
+                <Image source={{uri: item.image_url}} style={styles.carImage} resizeMode='contain' />
             </View>
         )
     });
@@ -35,7 +59,9 @@ export default function OfferScreen ({route}) {
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>Найдено 123 предложения</Text>
-                <Image />
+                <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
+                    <Image source={close} style={styles.closeImage} resizeMode='contain' />
+                </TouchableOpacity>
             </View>
             <ScrollView>
                 {data}
@@ -53,6 +79,7 @@ const styles = StyleSheet.create({
 	headerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center',
         paddingVertical: 25
     },
     headerText: {
@@ -61,7 +88,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     itemContainer: {
-        padding: 10
+        padding: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     infoContainer: {
 
@@ -95,11 +124,20 @@ const styles = StyleSheet.create({
         width: 50,
         height: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingBottom: 2
     },
     marketText: {
         fontFamily: 'SFPro',
         fontSize: 12,
         color: '#a0a4ae'
+    }, 
+    closeImage: {
+        width: 30,
+        height: 30
+    },
+    carImage: {
+        width: 200,
+        height: 100
     }
 });
