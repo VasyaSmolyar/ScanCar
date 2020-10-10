@@ -13,20 +13,20 @@ export default function OfferScreen ({ route, navigation }) {
             headers: {
                 'Content-type': 'application/json'
             },
-            /*
             body: JSON.stringify({
                 brand: car.brand,
                 model: car.model,
                 num: 20,
                 offset: 0
             })
-            */
+            /*
             body: JSON.stringify({
                 brand: "KIA",
                 model: "K5",
                 num: 20,
                 offset: 0
             })
+            */
         });
         const json = await response.json();
         console.log(json);
@@ -37,28 +37,42 @@ export default function OfferScreen ({ route, navigation }) {
         }
     }, []);
 
+    const getType = (type) => {
+        return type === "vtb" ? "Партнёр ВТБ" : "auto.ru";
+    }
+
+    const getSize = (len) => {
+        const bunch = len % 10;
+        if(bunch == 1) {
+            return "Найдено " + bunch + " предложение";
+        } else if(bunch > 1 && bunch < 5) {
+            return "Найдено " + bunch + " предложения";
+        }
+        return "Найдено " + bunch + " предложений"; 
+    }
+
     const data = list.map((item) => {
         return (
-            <View style={styles.itemContainer}>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('Auto', { item: item })}>
                 <View style={styles.infoContainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.carTitle}>{item.model} {item.brand}</Text>
                         <Text style={styles.carYear}>{item.production_date}</Text>
                     </View>
-                    <Text style={styles.carPrice}>{item.price}</Text>
+                    <Text style={styles.carPrice}>{item.price.toLocaleString()} ₽</Text>
                     <View style={styles.marketLabel}>
-                        <Text style={styles.marketText}>{item.type}</Text>
+                        <Text style={styles.marketText}>{getType(item.type)}</Text>
                     </View>
                 </View>
-                <Image source={{uri: item.image_url}} style={styles.carImage} resizeMode='contain' />
-            </View>
+                <Image source={{uri: item.image_urls[0]}} style={styles.carImage} resizeMode='contain' />
+            </TouchableOpacity>
         )
     });
 
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>Найдено 123 предложения</Text>
+                <Text style={styles.headerText}>{getSize(list.length)}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
                     <Image source={close} style={styles.closeImage} resizeMode='contain' />
                 </TouchableOpacity>
@@ -121,8 +135,6 @@ const styles = StyleSheet.create({
     },
     marketLabel : {
         backgroundColor: '#f3f4f7',
-        width: 50,
-        height: 20,
         justifyContent: 'center',
         alignItems: 'center',
         paddingBottom: 2
