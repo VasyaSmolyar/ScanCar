@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 import close from '../assets/return.png';
@@ -7,8 +7,8 @@ import { host } from '../constants';
 
 export default function CalculateScreen({ navigation, route }) {
     const { item } = route.params;
-    const [ amount, setAmount ] = useState(100);
-    const [ month, setMonth ] = useState(1);
+    const [ amount, setAmount ] = useState(10000);
+    const [ month, setMonth ] = useState(6);
     const [ final, setFinal ] = useState(0);
 
     const delim = (price) => {
@@ -31,14 +31,12 @@ export default function CalculateScreen({ navigation, route }) {
                 specialConditions: []
             })
         });
-        const text = await response.text();
-        console.log(text);
-        /*
         const json = await response.json();
         console.log(json);
         setFinal(json.loanAmount);
-        */
     }
+
+    useEffect(() => onPerform(), []);
 
     return (
         <View style={styles.container}>
@@ -58,27 +56,39 @@ export default function CalculateScreen({ navigation, route }) {
                     <View style={styles.sliderContainer}>
                         <Text style={styles.labelText}>Первоначальный взнос</Text>
                         <Text style={styles.priceText}>{delim(amount)} ₽</Text>
-                        <Slider style={styles.sliderStyle} onValueChange={(val) => { setAmount(val); onPerform(); }} minimumValue={100} 
-                        step={1} maximumValue={1000} thumbImage={picker} minimumTrackTintColor='#3a83f1' />
+                        <Slider style={styles.sliderStyle} onValueChange={(val) => { setAmount(val); onPerform(); }} minimumValue={10000} 
+                        step={1000} maximumValue={100000} thumbImage={picker} minimumTrackTintColor='#3a83f1' />
                         <View style={styles.rangeContainer}>
-                            <Text style={styles.rangeText}>100</Text>
-                            <Text style={styles.rangeText}>1000</Text>
+                            <Text style={styles.rangeText}>10000</Text>
+                            <Text style={styles.rangeText}>100000</Text>
                         </View>
                     </View>
                     <View style={styles.sliderContainer}>
                         <Text style={styles.labelText}>Период рассрочки</Text>
                         <Text style={styles.priceText}>{delim(month)} месяцев</Text>
-                        <Slider style={styles.sliderStyle} onValueChange={(val) => { setMonth(val); onPerform(); }} minimumValue={1} 
-                        step={1} maximumValue={10} thumbImage={picker} minimumTrackTintColor='#3a83f1' />
+                        <Slider style={styles.sliderStyle} onValueChange={(val) => { setMonth(val); onPerform(); }} minimumValue={6} 
+                        step={3} maximumValue={120} thumbImage={picker} minimumTrackTintColor='#3a83f1' />
                         <View style={styles.rangeContainer}>
-                            <Text style={styles.rangeText}>1</Text>
-                            <Text style={styles.rangeText}>100</Text>
+                            <Text style={styles.rangeText}>6</Text>
+                            <Text style={styles.rangeText}>120</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.sumContainer}>
                     <Text style={styles.sumLabel}>Сумма кредита к выплате:</Text>
                     <Text style={styles.sumText}>{delim(final)} ₽</Text>
+                </View>
+                <View style={{ paddingHorizontal: 30 }}>
+                    <View style={{paddingVertical: 30}}>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.carTitle}>Мультикарта</Text>
+                            <Text style={styles.carYear}>·· 3289</Text>
+                        </View>
+                        <Text style={styles.carPrice}>{delim(99999)} ₽</Text>
+                    </View>
+                    <TouchableOpacity style={styles.creditButton} onPress={() => {}}>
+                        <Text style={styles.creditText}>Взять кредит</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </View>
@@ -188,5 +198,43 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: '#3a83f1',
         fontWeight: 'bold'
-    }
+    },
+    textContainer: {
+        flexDirection: 'row',
+    },
+    carTitle: {
+        fontFamily: 'SFPro',
+        fontSize: 16,
+        fontWeight: 'bold',
+        letterSpacing: 1.5,
+        marginRight: 5
+    },
+    carYear: {
+        fontFamily: 'SFPro',
+        fontSize: 14,
+        color: '#a0a4ae',
+        position: 'relative',
+        top: 5
+    },
+    carPrice: {
+        fontFamily: 'SFPro',
+        textTransform: "uppercase",
+        fontSize: 18,
+        color: '#3a83f1',
+    },
+    creditButton: {
+        borderRadius: 10,
+        width: '100%',
+        backgroundColor: '#3a83f1',
+        alignItems: 'center',
+        paddingVertical: 10,
+        marginBottom: 50
+    },
+    creditText: {
+        color: '#fff',
+        fontSize: 16,
+        fontFamily: 'SFPro',
+        textTransform: "uppercase",
+        letterSpacing: 1.5,
+    },
 });
