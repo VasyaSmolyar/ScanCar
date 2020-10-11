@@ -60,6 +60,10 @@ export default function CreditScreen ({ route, navigation }) {
 
                 <View>
                     <CheckBox />
+                    <View>
+                        <Text></Text>
+                        <Text></Text>
+                    </View>
                 </View>
 
             </ScrollView>
