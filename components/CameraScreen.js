@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import CarModal from '../modals/CarModal';
 import button from '../assets/photo.png';
+import load from '../assets/load.gif';
 import { host } from '../constants';
+
+function Loading({enable}) {
+	return (
+		<Modal transparent={true} visible={enable} style={styles.backLoading} animationType="fade">
+			<View style={styles.loadingContainer}>
+				<Image style={styles.loadingImage} source={load} resizeMode='contain' />
+				<Text style={styles.loadingText}>Идёт распознавание..</Text>
+			</View>
+		</Modal>
+	)
+}
 
 export default function CartScreen() {
 	const [perm, setPerm] = useState(null);
 	const [cameraRef, setCameraRef] = useState(null);
 	const [item, setItem] = useState(null);
+	const [mes, setMes] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -40,11 +53,19 @@ export default function CartScreen() {
 		});
 		const text = await response.json();
 		console.log(text);
+		setMes(false);
 		setItem(text);
 	}
 
+	const onStart = () => {
+		if(!mes) {
+			setMes(true);
+			setPhoto();
+		}
+	} 
+
 	const container = item === null ? (
-		<TouchableOpacity style={styles.buttonContainer} onPress={setPhoto}>
+		<TouchableOpacity style={styles.buttonContainer} onPress={onStart}>
 			<Image source={button} resizeMode='contain' style={styles.photoButton} />
 		</TouchableOpacity>
 	) : null;
@@ -52,6 +73,7 @@ export default function CartScreen() {
     return (
         <View style={{flex: 1}}>
 			<CarModal item={item} onClose={() => setItem(null)} />
+			<Loading enable={mes} />
             <Camera style={{flex: 1}} type={Camera.Constants.Type.back} ref={ref => {setCameraRef(ref);}}>
 			<View style={{
 				flex: 1,
@@ -73,5 +95,25 @@ const styles = StyleSheet.create({
 	photoButton: {
 		width: 75,
 		height: 75
+	},
+	backLoading: {
+		alignItems: "center"
+	},
+	loadingContainer: {
+		backgroundColor: 'white',
+		padding: 15,
+		flexDirection: 'row',
+		alignItems: 'center',
+		borderBottomLeftRadius: 15,
+		borderBottomRightRadius: 15
+	},
+	loadingImage: {
+		width: 30,
+		height: 30
+	},
+	loadingText: {
+		marginLeft: 15,
+		fontFamily: 'SFPro',
+        fontSize: 16,
 	}
 });

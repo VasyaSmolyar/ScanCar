@@ -26,11 +26,13 @@ export default function CarModal({item, onClose}) {
                             onClose();
                             navigation.navigate('Offers', {car: item});
                         }}>
-                            <Text style={styles.buyText}>Купить новую</Text>
+                            <Text style={styles.buyText}>Найти</Text>
                         </TouchableOpacity>
+                        { /*
                         <TouchableOpacity style={styles.creditButton}>
                             <Text style={styles.creditText}>Взять в кредит</Text>
                         </TouchableOpacity>
+                        */ }
                     </View>
                 </View>
                 <View style={styles.bottomContainer}>
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     container: {
-        flex: 7,
+        flex: 4,
         backgroundColor: '#fff',
         borderRadius: 20
     },  

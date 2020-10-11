@@ -10,6 +10,7 @@ export default function CalculateScreen({ navigation, route }) {
     const [ amount, setAmount ] = useState(10000);
     const [ month, setMonth ] = useState(6);
     const [ final, setFinal ] = useState(0);
+    const [ credit, setCredit ] = useState(null);
 
     const delim = (price) => {
         let parts = price.toString().split(".");
@@ -34,6 +35,7 @@ export default function CalculateScreen({ navigation, route }) {
         const json = await response.json();
         console.log(json);
         setFinal(json.loanAmount);
+        setCredit(json);
     }
 
     useEffect(() => onPerform(), []);
@@ -86,7 +88,7 @@ export default function CalculateScreen({ navigation, route }) {
                         </View>
                         <Text style={styles.carPrice}>{delim(99999)} ₽</Text>
                     </View>
-                    <TouchableOpacity style={styles.creditButton} onPress={() => {}}>
+                    <TouchableOpacity style={styles.creditButton} onPress={() => navigation.navigate('Credit', { item: item, credit: credit })}>
                         <Text style={styles.creditText}>Взять кредит</Text>
                     </TouchableOpacity>
                 </View>
