@@ -62,7 +62,7 @@ export default function AutoScreen ({ route, navigation }) {
             <TouchableOpacity style={styles.buyButton}>
                 <Text style={styles.buyText}>Купить</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.creditButton}>
+            <TouchableOpacity style={styles.creditButton} onPress={() => navigation.navigate('Calculate', {item: item})}>
                 <Text style={styles.creditText}>Взять в кредит</Text>
             </TouchableOpacity>
         </View>

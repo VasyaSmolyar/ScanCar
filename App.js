@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import CameraScreen from './components/CameraScreen';
 import OfferScreen from './components/OfferScreen';
 import AutoScreen from './components/AutoScreen';
+import CalculateScreen from './components/CalculateScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ export default function App() {
 					<Stack.Screen name="Camera" component={CameraScreen} />
 					<Stack.Screen name="Offers" component={OfferScreen} />
 					<Stack.Screen name="Auto" component={AutoScreen} />
+					<Stack.Screen name="Calculate" component={CalculateScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</View>

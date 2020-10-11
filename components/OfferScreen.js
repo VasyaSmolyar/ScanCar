@@ -44,11 +44,17 @@ export default function OfferScreen ({ route, navigation }) {
     const getSize = (len) => {
         const bunch = len % 10;
         if(bunch == 1) {
-            return "Найдено " + bunch + " предложение";
+            return "Найдено " + len + " предложение";
         } else if(bunch > 1 && bunch < 5) {
-            return "Найдено " + bunch + " предложения";
+            return "Найдено " + len + " предложения";
         }
-        return "Найдено " + bunch + " предложений"; 
+        return "Найдено " + len + " предложений"; 
+    }
+
+    const delim = (price) => {
+        let parts = price.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        return parts.join(".");
     }
 
     const data = list.map((item) => {
@@ -59,7 +65,7 @@ export default function OfferScreen ({ route, navigation }) {
                         <Text style={styles.carTitle}>{item.model} {item.brand}</Text>
                         <Text style={styles.carYear}>{item.production_date}</Text>
                     </View>
-                    <Text style={styles.carPrice}>{item.price.toLocaleString()} ₽</Text>
+                    <Text style={styles.carPrice}>{delim(item.price)} ₽</Text>
                     <View style={styles.marketLabel}>
                         <Text style={styles.marketText}>{getType(item.type)}</Text>
                     </View>
