@@ -26,11 +26,42 @@ export default function CreditScreen ({ route, navigation }) {
     const [ mail, setMail ] = useState('');
     const [ phone, setPhone ] = useState('');
     const [ comment, setComment ] = useState('');
+    const [ assign, setAssign ] = useState(false);
 
     const delim = (price) => {
         let parts = price.toString().split(".");
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         return parts.join(".");
+    }
+
+    const onSend =  async () => {
+        const response = await fetch(host + 'api/credit/apply', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                comment: comment,
+                    email: mail,
+                    income_amount : income, 
+                    birth_date_time : "1991-01-01",
+                    birth_place : "Москва",
+                    family_name : lastName,
+                    first_name : firstName,
+                    middle_name : secondName,
+                    gender: "male",
+                    nationality_country_code: "RU",
+                    phone: phone,
+                    interest_rate: credit.contractRate,
+                    requested_amount: credit.payment,
+                    requested_term: credit.term / 12,
+                    trade_mark: item.model + " " + item.brand,
+                    vehicle_cost: item.price
+            }),
+        });
+        const json = await response.json();
+        console.log(json);
+        navigation.navigate("Final", {data: json, item: item});
     }
 
     return (
@@ -58,13 +89,16 @@ export default function CreditScreen ({ route, navigation }) {
                 <FieldInput field={comment} setField={setComment} name="Комментарий" 
                 edit={true} multiline={true} />
 
-                <View>
-                    <CheckBox />
-                    <View>
-                        <Text></Text>
-                        <Text></Text>
+                <View style={styles.assignContainer}>
+                    <CheckBox value={assign} onValueChange={setAssign} />
+                    <View style={styles.textContainer}>
+                        <Text style={styles.textAssign}>Я согласен с условиями договора и потверждаю своё согласие на обработку персональных данных Банком</Text>
+                        <Text style={styles.textMore}>Открыть список документов</Text>
                     </View>
                 </View>
+                <TouchableOpacity style={styles.creditButton} onPress={onSend}>
+                    <Text style={styles.creditText}>Расчитать кредит</Text>
+                </TouchableOpacity>
 
             </ScrollView>
         </View>
@@ -110,5 +144,37 @@ const styles = StyleSheet.create({
     closeImage: {
         width: 30,
         height: 30
+    },
+    assignContainer: {
+        flexDirection: 'row',
+        marginVertical: 15
+    },
+    textContainer: {
+        fontFamily: 'SFPro',
+        fontSize: 15,
+    },
+    textAssign: {
+        fontFamily: 'SFPro',
+        fontSize: 15,
+        marginBottom: 15
+    },
+    textMore: {
+        fontFamily: 'SFPro',
+        fontSize: 15,
+    },
+    creditButton: {
+        borderRadius: 10,
+        width: '100%',
+        backgroundColor: '#3a83f1',
+        alignItems: 'center',
+        paddingVertical: 10,
+        marginBottom: 50
+    },
+    creditText: {
+        color: '#fff',
+        fontSize: 16,
+        fontFamily: 'SFPro',
+        textTransform: "uppercase",
+        letterSpacing: 1.5,
     },
 });

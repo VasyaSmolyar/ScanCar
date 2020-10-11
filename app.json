@@ -24,6 +24,7 @@
     },
     "androidNavigationBar": {
       "visible": "sticky-immersive"
-    }
+    },
+    "description": ""
   }
 }

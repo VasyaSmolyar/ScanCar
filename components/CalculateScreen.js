@@ -81,13 +81,6 @@ export default function CalculateScreen({ navigation, route }) {
                     <Text style={styles.sumText}>{delim(final)} ₽</Text>
                 </View>
                 <View style={{ paddingHorizontal: 30 }}>
-                    <View style={{paddingVertical: 30}}>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.carTitle}>Мультикарта</Text>
-                            <Text style={styles.carYear}>·· 3289</Text>
-                        </View>
-                        <Text style={styles.carPrice}>{delim(99999)} ₽</Text>
-                    </View>
                     <TouchableOpacity style={styles.creditButton} onPress={() => navigation.navigate('Credit', { item: item, credit: credit })}>
                         <Text style={styles.creditText}>Взять кредит</Text>
                     </TouchableOpacity>
